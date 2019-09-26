@@ -35,11 +35,12 @@ func (m *MockSceneTable) EXPECT() *MockSceneTableMockRecorder {
 }
 
 // SelectRowsByName mocks base method
-func (m *MockSceneTable) SelectRowsByName(name string) []repository.SceneRow {
+func (m *MockSceneTable) SelectRowsByName(name string) ([]repository.SceneRow, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SelectRowsByName", name)
 	ret0, _ := ret[0].([]repository.SceneRow)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // SelectRowsByName indicates an expected call of SelectRowsByName
