@@ -29,6 +29,7 @@ func HandleTest(writer http.ResponseWriter, request *http.Request) {
 	response.Success(writer, TestResponse{SceneRows: sceneRows})
 }
 
+
 type SceneRow struct {
 	Name   string `json:"name"`
 	Num    int    `json:"num"`

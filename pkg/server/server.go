@@ -18,6 +18,7 @@ func Serve(addr string) {
 	http.HandleFunc("/image/change", post(handler.PostHandleImageChange))
 	http.HandleFunc("/scene/list", get(handler.GetHandleSceneList))
 	http.HandleFunc("/scene/add", post(handler.PostHandleSceneAdd))
+	http.HandleFunc("/timetable", get(handler.HandleTimeTable))
 	http.HandleFunc("/scene/delete", post(handler.PostHandleSceneDelete))
 	log.Println("Server running...")
 	err := http.ListenAndServe(addr, nil)
