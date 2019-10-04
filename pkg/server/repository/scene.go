@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"prote-API/pkg/server/repository/db"
 )
@@ -40,6 +41,27 @@ func (scene *Scene) BulkInsert(name string, num int, works []string, texts []str
 		return err
 	}
 	_, err = stmt.Exec(queryData...)
+	return err
+}
+
+// Delete データの削除
+func (scene *Scene) Delete(name string) error {
+	query := "DELETE FROM scene WHERE name = ?"
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	result, err := stmt.Exec(name)
+	if err != nil {
+		return err
+	}
+	checkNum, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if checkNum == 0 {
+		return fmt.Errorf("消すデータが存在しません")
+	}
 	return err
 }
 

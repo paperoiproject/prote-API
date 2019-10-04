@@ -28,3 +28,9 @@ func (sceneService *SceneService) Add(name string, num int, works []string, text
 	err := sceneService.SceneTable.BulkInsert(name, num, works, texts)
 	return err
 }
+
+// Delete /scene/deleteのサービス
+func (sceneService *SceneService) Delete(name string) error {
+	err := sceneService.SceneTable.Delete(name)
+	return err
+}
