@@ -85,3 +85,14 @@ type ResponseSceneAdd struct {
 	Name  string `json:"name"`
 	Tasks []Task `json:"tasks"`
 }
+
+// PostHandleSceneDelete /scene/deleteのハンドラ(シーンリストの変更)
+func PostHandleSceneDelete(writer http.ResponseWriter, request *http.Request) {
+	FormName := request.FormValue("name")
+	err := service.Service.SceneService.Delete(FormName)
+	if err != nil {
+		log.Println(err)
+		response.BadRequest(writer, "予期しないエラー")
+	}
+	response.Success(writer, "OK")
+}
