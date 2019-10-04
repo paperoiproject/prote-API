@@ -1,9 +1,13 @@
 package response
 
 import (
+	"bytes"
 	"encoding/json"
+	"image"
+	"image/jpeg"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 // Success HTTPコード:200 正常終了を処理する
@@ -45,6 +49,18 @@ func httpError(writer http.ResponseWriter, code int, message string) {
 	writer.WriteHeader(code)
 	if data != nil {
 		writer.Write(data)
+	}
+}
+
+func SuccessFile(writer http.ResponseWriter, img *image.Image) {
+	buffer := new(bytes.Buffer)
+	if err := jpeg.Encode(buffer, *img, nil); err != nil {
+		log.Println("unable to encode image.")
+	}
+	writer.Header().Set("Content-Type", "image/jpeg")
+	writer.Header().Set("Content-Length", strconv.Itoa(len(buffer.Bytes())))
+	if _, err := writer.Write(buffer.Bytes()); err != nil {
+		log.Println("unable to write image.")
 	}
 }
 

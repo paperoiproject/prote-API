@@ -13,6 +13,11 @@ func Serve(addr string) {
 	rand.Seed(time.Now().UnixNano())
 	/* ===== URLマッピングを行う ===== */
 	http.HandleFunc("/test", get(handler.HandleTest))
+	http.HandleFunc("/image/add", post(handler.PostHandleImageAdd))
+	http.HandleFunc("/image/see", get(handler.GetHandleImageSee))
+	http.HandleFunc("/image/change", post(handler.PostHandleImageChange))
+	http.HandleFunc("/scene/list", get(handler.GetHandleSceneList))
+	http.HandleFunc("/scene/add", post(handler.PostHandleSceneAdd))
 	log.Println("Server running...")
 	err := http.ListenAndServe(addr, nil)
 	if err != nil {

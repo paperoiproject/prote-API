@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"log"
 	"prote-API/pkg/server/repository/db"
 )
 
@@ -15,6 +16,31 @@ func (scene *Scene) SelectRowsByName(name string) ([]SceneRow, error) {
 		return nil, err
 	}
 	return convertRowsToSceneRows(rows)
+}
+
+// BulkInsert データベースをレコードを登録する
+func (scene *Scene) BulkInsert(name string, num int, works []string, texts []string) error {
+	query := "INSERT INTO scene(name, num, action, text) VALUES"
+	queryData := make([]interface{}, num*4, num*4)
+	for i := 0; i < num*4; i = i + 4 {
+		queryData[i] = name
+		queryData[i+1] = i / 4
+		queryData[i+2] = works[i/4]
+		queryData[i+3] = texts[i/4]
+		query += " (?, ?, ?, ?)"
+		if i/4 == num-1 {
+			break
+		} else {
+			query += ","
+		}
+	}
+	log.Println(query)
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(queryData...)
+	return err
 }
 
 // convertRowsToSceneRows rowsの[]SceneRowへの変換
